@@ -153,3 +153,8 @@ spa/*.ntvs*
 spa/*.njsproj
 spa/*.sln
 spa/*.sw?
+
+
+#Par de Chaves - AWS
+AWS-EC2
+AWS-EC2/* thicodewallet.pem
