@@ -1,63 +1,80 @@
-CONFIGURAÇÕES PARA RODAR O DOCKER NO AWS EC2
+Data: 20/06/2025 10:00
 
-Antes de instalar o Docker Engine pela primeira vez em uma nova máquina host,
-você precisa configurar o repositório Docker. 
-Depois, você pode instalar e atualizar o Docker a partir do repositório.
+Autor: Matheus Pereira
 
-1: Adicione a chave GPG oficial do Docker:
-    # Configure o repositório Apt do Docker.
-        sudo apt-get update
-        sudo apt-get install ca-certificates curl gnupg
-        sudo install -m 0755 -d /etc/apt/keyrings
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        sudo chmod a+r /etc/apt/keyrings/docker.gpg
+Descrição:
+  nesse bloco de notas temos todos os comando necessarios para configurar corretamente o Docker na instancia do AWS EC2,
 
-    # Adicione o repositório às fontes do Apt:
-        echo \
-          "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-          "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        sudo apt-get update
+1.
+  antes de instalar o Docker engine pela primeira vez em uma nova maquina,
+  precisamos antes configurar o repositório do Docker.
+  depois disso poderemos instalar e atualizar o Docker a partir do repositório.
 
+1.1. 
+  adicione a chave GPG oficial do Docker.
+  comando 01:
+    # configure o repositório Apt do Docker.
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl gnupg
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-2: Instale os pacotes Docker.
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+1.2.
+  comando 02:
+    # adicione o repositório às fontes do Apt:
+    echo \
+      "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
 
-3: Verifique se a instalação do Docker Engine foi bem-sucedida executando a imagem hello-world.
-sudo docker run hello-world
+2. 
+  instalação dos pacotes do Docker.
+    comando: sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
---------------------------------------------------------------------------------
+3.
+  verificando se a instalação do Docker Engine foi bem-sucedida.
+    comando: sudo docker run hello-world
 
-Recebendo erros ao tentar executar sem root ?
-O grupo de usuários 'docker' existe, mas não contém usuários, 
-por isso é necessário usar o 'sudo' para executar comandos do Docker.
+== Configurações de Grupos e Usuários
 
-Para criar o grupo 'docker' e adicionar seu usuário:
+Info: 
+  Recebendo erros ao tentar executar sem root ?
+  O grupo de usuários 'docker' existe, mas não contém usuários,
+  por isso é necessário usar o 'sudo' para executar comandos do Docker.
 
-1: Crie o grupo do docker.
-sudo groupadd docker
+  Para criar o grupo 'docker' e adicionar seu usuário:
 
-2: Adicione seu usuário ao grupo docker.
-sudo usermod -aG docker $USER
+1.
+  Crie o grupo do docker.
+    comando: sudo groupadd docker
 
-3: Saia e faça login novamente para que sua participação no grupo seja reavaliada.
+2.
+  Adicione seu usuário ao grupo docker.
+    comando: sudo usermod -aG docker $USER
 
-Você também pode executar o seguinte comando para ativar as alterações nos grupos:
-newgrp docker
+3.
+  Saia e faça login novamente para que sua participação no grupo seja reavaliada.
 
-4: Verifique se você pode executar comandos do docker sem o sudo.
-docker run hello-world
+  Você também pode executar o seguinte comando para ativar as alterações nos grupos:
+    comando: newgrp docker
 
---------------------------------------------------------------------------------
+4.
+  Verifique se você pode executar comandos do docker sem o sudo.
+    comando: docker run hello-world
 
-# SSH
+== Configurações SSH, iremos usar essa chave SSH no GitGub para configurar o acesso aos nossos repositórios.
 
-O primeiro passo é criar um par de chaves na máquina cliente (geralmente o seu computador):
-ssh-keygen
-ou - rsa <= esse eo nome de sua CHAVE SSH
-ssh-keygen -o -t rsa -C "sap.matheusoliveira@gmail.com"
+# o primeiro passo é criar um par de chaves na máquina cliente (geralmente o seu computador).
+  comando:
+    ssh-keygen
+    ou
+    ssh-keygen -o -t rsa -C "sap.matheusoliveira@gmail.com"
+    OBS: rsa, esse e o nome da chave SSH, você pode decidir ser outro.
 
-Pressione enter para todas as opções e não adicione uma senha, então obtenha a chave com este comando:
-cat ~/.ssh/id_rsa.pub
-ou pelo comando abaixo, visto que a localização pode ser diferente
-cat /home/ubuntu/.ssh/id_ed25519
+# pressione enter para todas as opções e não adicione uma senha, então obtenha a chave com este comando.
+  comando:
+    cat ~/.ssh/id_chave_ssh
+    ou
+    cat /home/ubuntu/.ssh/id_chave_ssh
